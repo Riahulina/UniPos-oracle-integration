@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
@@ -10,29 +11,33 @@ use Illuminate\Support\Str;
 
 class RegisterUsahaController extends Controller
 {
-    // tampilkan form daftar usaha
     public function create()
     {
         return view('auth.register_usaha');
     }
 
-    // proses simpan usaha
     public function store(Request $request)
     {
         $request->validate([
             'nama_usaha' => 'required',
             'alamat' => 'nullable',
             'telp' => 'nullable',
-            'logo' => 'nullable|image',
+            'logo' => 'nullable|image|mimes:png,jpg,jpeg|max:2048',
             'nama_owner' => 'required',
             'email' => 'required|email|unique:users,email',
             'password' => 'required|min:6'
         ]);
 
-        // upload logo jika ada
-        $logoPath = null;
+        $logoName = null;
+
+        // upload logo
         if ($request->hasFile('logo')) {
-            $logoPath = $request->file('logo')->store('logo_usaha', 'public');
+
+            $file = $request->file('logo');
+
+            $logoName = time().'_'.$file->getClientOriginalName();
+
+            $file->storeAs('logo_usaha', $logoName, 'public');
         }
 
         // generate kode usaha
@@ -44,7 +49,7 @@ class RegisterUsahaController extends Controller
             'nama_usaha' => $request->nama_usaha,
             'alamat' => $request->alamat,
             'telp' => $request->telp,
-            'logo' => $logoPath
+            'logo' => $logoName
         ]);
 
         // buat user owner
@@ -56,11 +61,9 @@ class RegisterUsahaController extends Controller
             'usaha_id' => $usaha->id
         ]);
 
-        // redirect ke register user + kirim kode usaha
         return redirect('/register')->with([
             'success' => 'Usaha berhasil dibuat',
             'kode_usaha' => $kodeUsaha
         ]);
     }
 }
-
