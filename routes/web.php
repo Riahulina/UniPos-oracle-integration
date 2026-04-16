@@ -3,11 +3,16 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\Auth\RegisterUsahaController;
+use App\Http\Controllers\ProdukController;
+use App\Http\Controllers\KategoriController;
+use App\Http\Controllers\TransaksiController;
 
 Route::get('/', function () {
     return view('welcome');
 })->name('welcome');
 
+Route::view('/fitur', 'pages.fitur');
+Route::view('/about', 'pages.about');
 
 /*
 |--------------------------------------------------------------------------
@@ -49,8 +54,46 @@ Route::middleware('auth')->group(function () {
 
     Route::delete('/profile', [ProfileController::class, 'destroy'])
         ->name('profile.destroy');
+});
 
+/*
+|--------------------------------------------------------------------------
+| Produk
+|--------------------------------------------------------------------------
+*/
+
+
+Route::middleware(['auth'])->group(function () {
+    Route::resource('produk', ProdukController::class);
+});
+
+/*
+|--------------------------------------------------------------------------
+| Kategori
+|--------------------------------------------------------------------------
+*/
+
+Route::middleware(['auth'])->group(function () {
+    Route::resource('kategori', KategoriController::class);
 });
 
 
-require __DIR__.'/auth.php';
+/*
+|--------------------------------------------------------------------------
+| Transaksi
+|--------------------------------------------------------------------------
+*/
+
+Route::middleware(['auth'])->group(function () {
+    Route::resource('transaksi', TransaksiController::class);
+});
+
+/*
+|--------------------------------------------------------------------------
+| Barcode
+|--------------------------------------------------------------------------
+*/
+Route::get('/barcode', [App\Http\Controllers\BarcodeController::class, 'index'])
+    ->name('barcode.index');
+
+require __DIR__ . '/auth.php';

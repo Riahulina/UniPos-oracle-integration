@@ -6,18 +6,42 @@ use Illuminate\Database\Eloquent\Model;
 
 class Transaksi extends Model
 {
+    protected $table = 'transaksi';
+
+    protected $fillable = [
+        'usaha_id',
+        'total',
+        'bayar',
+        'kembalian'
+    ];
+
+    /*
+    |--------------------------------------------------------------------------
+    | RELATION
+    |--------------------------------------------------------------------------
+    */
+
+    // 🔗 ke usaha
     public function usaha()
-        {
-            return $this->belongsTo(Usaha::class);
-        }
+    {
+        return $this->belongsTo(Usaha::class);
+    }
 
-    public function user()
-        {
-            return $this->belongsTo(User::class);
-        }
+    // 🔗 ke detail transaksi
+    public function detailTransaksi()
+    {
+        return $this->hasMany(DetailTransaksi::class, 'transaksi_id');
+    }
 
-    public function detail()
-        {
-            return $this->hasMany(DetailTransaksi::class);
-        }
- }
+    /*
+    |--------------------------------------------------------------------------
+    | HELPER (BIAR ENAK DIPAKE)
+    |--------------------------------------------------------------------------
+    */
+
+    // total qty semua item
+    public function getTotalItemAttribute()
+    {
+        return $this->detailTransaksi->sum('qty');
+    }
+}
