@@ -6,50 +6,53 @@ use App\Models\Produk;
 use App\Models\Kategori;
 use App\Models\Transaksi;
 use App\Models\TransaksiItem;
+use App\Models\Pelanggan;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Auth;
 
 class TransaksiController extends Controller
 {
-    /**
-     * HALAMAN UTAMA TRANSAKSI (LIST + PRODUK / KASIR)
-     */
     public function index()
     {
-        $user = auth()->user();
+        $user = Auth::user();
 
-        // 🔹 Data transaksi
         $transaksi = Transaksi::where('usaha_id', $user->usaha_id)
             ->latest()
             ->paginate(15);
 
-        // 🔹 Produk untuk kasir
         $produk = Produk::with('kategori')
             ->where('usaha_id', $user->usaha_id)
             ->where('status', 'aktif')
             ->orderBy('nama_produk')
             ->get();
 
-        // 🔹 Kategori (optional filter UI)
         $kategori = Kategori::where('usaha_id', $user->usaha_id)->get();
+
+        $pelanggan = Pelanggan::where('usaha_id', $user->usaha_id)->get();
 
         return view('dashboard.transaksi.index', compact(
             'transaksi',
             'produk',
-            'kategori'
+            'kategori',
+            'pelanggan'
         ));
     }
 
-    /**
-     * SIMPAN TRANSAKSI
-     */
     public function store(Request $request)
     {
+        $user = Auth::user();
+
+        if (!$user) {
+            return back()->with('error', 'User tidak terdeteksi, silakan login ulang.');
+        }
+
         $request->validate([
-            'items'     => 'required|json',
-            'total'     => 'required|numeric|min:1',
-            'bayar'     => 'required|numeric|min:0',
-            'kembalian' => 'required|numeric|min:0',
+            'items'        => 'required|json',
+            'total'        => 'required|numeric|min:1',
+            'bayar'        => 'required|numeric|min:0',
+            'kembalian'    => 'required|numeric|min:0',
+            'pelanggan_id' => 'nullable|exists:pelanggan,id',
         ]);
 
         $items = json_decode($request->items, true);
@@ -65,21 +68,42 @@ class TransaksiController extends Controller
         DB::beginTransaction();
 
         try {
+
+            // 🔥 AUTO CREATE PELANGGAN JIKA INPUT NAMA BARU
+            $pelanggan_id = $request->pelanggan_id;
+
+            if (empty($pelanggan_id) && $request->nama_pelanggan_baru) {
+
+            dd('MASUK CREATE PELANGGAN'); 
+
+                $pelanggan = Pelanggan::create([
+                    'usaha_id' => $user->usaha_id,
+                    'nama'     => $request->nama_pelanggan_baru,
+                    'telepon'  => null,
+                    'email'    => null,
+                    'alamat'   => null,
+                ]);
+
+                $pelanggan_id = $pelanggan->id;
+            }
+
+            // 🔥 CREATE TRANSAKSI
             $transaksi = Transaksi::create([
-                'usaha_id'  => auth()->user()->usaha_id,
-                'user_id'   => auth()->id(),
-                'total'     => $request->total,
-                'bayar'     => $request->bayar,
-                'kembalian' => $request->kembalian,
+                'usaha_id'     => $user->usaha_id,
+                'user_id'      => $user->id,
+                'pelanggan_id' => $pelanggan_id,
+                'total'        => $request->total,
+                'bayar'        => $request->bayar,
+                'kembalian'    => $request->kembalian,
             ]);
 
+            // 🔥 INSERT ITEM
             foreach ($items as $item) {
 
                 $produk = Produk::lockForUpdate()->findOrFail($item['id']);
 
-                // 🔹 Cek stok
                 if (!$produk->is_jasa && $produk->stok < $item['qty']) {
-                    throw new \Exception("Stok '{$produk->nama_produk}' tidak cukup (sisa {$produk->stok})");
+                    throw new \Exception("Stok {$produk->nama_produk} tidak cukup");
                 }
 
                 TransaksiItem::create([
@@ -91,7 +115,6 @@ class TransaksiController extends Controller
                     'subtotal'     => $produk->harga_jual * $item['qty'],
                 ]);
 
-                // 🔹 Kurangi stok
                 if (!$produk->is_jasa) {
                     $produk->decrement('stok', $item['qty']);
                 }
@@ -109,24 +132,18 @@ class TransaksiController extends Controller
         }
     }
 
-    /**
-     * DETAIL TRANSAKSI
-     */
     public function show(Transaksi $transaksi)
     {
-        abort_if($transaksi->usaha_id !== auth()->user()->usaha_id, 403);
+        abort_if($transaksi->usaha_id !== Auth::user()->usaha_id, 403);
 
-        $transaksi->load('items');
+        $transaksi->load('items', 'pelanggan', 'user');
 
         return view('dashboard.transaksi.show', compact('transaksi'));
     }
 
-    /**
-     * HAPUS TRANSAKSI
-     */
     public function destroy(Transaksi $transaksi)
     {
-        abort_if($transaksi->usaha_id !== auth()->user()->usaha_id, 403);
+        abort_if($transaksi->usaha_id !== Auth::user()->usaha_id, 403);
 
         $transaksi->items()->delete();
         $transaksi->delete();

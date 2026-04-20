@@ -11,25 +11,22 @@ return new class extends Migration
         Schema::create('detail_transaksi', function (Blueprint $table) {
             $table->id();
 
-            $table->unsignedBigInteger('transaksi_id');
-            $table->unsignedBigInteger('produk_id');
+            $table->foreignId('transaksi_id')
+                  ->constrained('transaksi')
+                  ->onDelete('cascade');
+
+            $table->foreignId('produk_id')
+                  ->constrained('produk')
+                  ->onDelete('cascade');
+
+            // 🔥 TAMBAHAN (BIAR GA ERROR LAGI)
+            $table->string('nama_produk');
 
             $table->integer('qty');
             $table->integer('harga');
             $table->integer('subtotal');
 
             $table->timestamps();
-
-            // FK
-            $table->foreign('transaksi_id')
-                  ->references('id')
-                  ->on('transaksi')
-                  ->onDelete('cascade');
-
-            $table->foreign('produk_id')
-                  ->references('id')
-                  ->on('produk')
-                  ->onDelete('cascade');
         });
     }
 

@@ -1,9 +1,5 @@
 <?php
 
-// ═══════════════════════════════════════════════
-// app/Models/TransaksiItem.php
-// ═══════════════════════════════════════════════
-
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -12,6 +8,9 @@ use Illuminate\Database\Eloquent\Model;
 class TransaksiItem extends Model
 {
     use HasFactory;
+
+    // 🔥 WAJIB: samakan dengan nama tabel di database
+    protected $table = 'detail_transaksi';
 
     protected $fillable = [
         'transaksi_id',
@@ -22,19 +21,21 @@ class TransaksiItem extends Model
         'subtotal',
     ];
 
-    /**
-     * Relasi ke Transaksi induk
-     */
+    /*
+    |--------------------------------------------------------------------------
+    | RELATION
+    |--------------------------------------------------------------------------
+    */
+
+    // 🔗 ke transaksi
     public function transaksi()
     {
-        return $this->belongsTo(Transaksi::class);
+        return $this->belongsTo(Transaksi::class, 'transaksi_id');
     }
 
-    /**
-     * Relasi ke Produk (bisa null kalau produk sudah dihapus)
-     */
+    // 🔗 ke produk
     public function produk()
     {
-        return $this->belongsTo(Produk::class)->withDefault();
+        return $this->belongsTo(Produk::class, 'produk_id')->withDefault();
     }
 }

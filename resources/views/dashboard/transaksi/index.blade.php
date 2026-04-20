@@ -960,6 +960,29 @@
                     <span class="lbl">Diskon</span>
                     <span class="val" style="color:#059669;">— Rp 0</span>
                 </div>
+
+                <div class="pay-label">Pelanggan</div>
+
+                <input
+                    type="text"
+                    name="nama_pelanggan_baru"
+                    id="nama_pelanggan_baru"
+                    class="pay-inp"
+                    placeholder="Ketik nama pelanggan baru (opsional)">
+
+                <select name="pelanggan_id" id="pelanggan_id" class="pay-inp">
+                    <option value="">-- Pilih Pelanggan Lama (Opsional) --</option>
+
+                    @foreach($pelanggan as $plg)
+                    <option value="{{ $plg->id }}">
+                        {{ $plg->nama }}
+                        @if($plg->telepon)
+                        ({{ $plg->telepon }})
+                        @endif
+                    </option>
+                    @endforeach
+                </select>
+
                 <div class="cart-total-row">
                     <span class="cart-total-lbl">Total Bayar</span>
                     <span class="cart-total-val" id="cart-total">Rp 0</span>

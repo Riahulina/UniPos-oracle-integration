@@ -11,11 +11,23 @@ return new class extends Migration
         Schema::create('transaksi', function (Blueprint $table) {
             $table->id();
 
-            // ✅ langsung pakai foreignId (lebih clean)
+            // 🔹 usaha
             $table->foreignId('usaha_id')
-                  ->constrained('usaha')
-                  ->onDelete('cascade');
+                ->constrained('usaha')
+                ->cascadeOnDelete();
 
+            // 🔥 kasir (user login)
+            $table->foreignId('user_id')
+                ->constrained('users')
+                ->cascadeOnDelete();
+
+            // 🔥 pelanggan (boleh null = pembeli umum)
+            $table->foreignId('pelanggan_id')
+                ->nullable()
+                ->constrained('pelanggan')
+                ->nullOnDelete();
+
+            // 🔹 keuangan
             $table->integer('total');
             $table->integer('bayar');
             $table->integer('kembalian');

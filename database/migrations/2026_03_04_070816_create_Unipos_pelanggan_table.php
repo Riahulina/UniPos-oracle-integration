@@ -6,22 +6,22 @@ use Illuminate\Support\Facades\Schema;
 
 return new class extends Migration
 {
-    /**
-     * Run the migrations.
-     */
-    public function up(): void
-    {
-        Schema::create('pelanggan', function (Blueprint $table) {
-            $table->id();
-            $table->timestamps();
-        });
-    }
+   public function up(): void
+{
+    Schema::create('pelanggan', function (Blueprint $table) {
+        $table->id();
 
-    /**
-     * Reverse the migrations.
-     */
-    public function down(): void
-    {
-        Schema::dropIfExists('pelanggan');
-    }
+        $table->foreignId('usaha_id')
+              ->nullable()
+              ->constrained('usaha')
+              ->nullOnDelete();
+
+        $table->string('nama');
+        $table->string('telepon')->nullable();
+        $table->string('email')->nullable();
+        $table->text('alamat')->nullable();
+
+        $table->timestamps();
+    });
+}
 };
