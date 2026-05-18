@@ -4,26 +4,29 @@ namespace App\Http\Controllers;
 
 use App\Models\Kategori;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class KategoriController extends Controller
 {
     public function index()
     {
-        $kategori = Kategori::all();
+        $user = Auth::user();
 
-        // ✅ FIX PATH VIEW
+        $kategori = Kategori::where('usaha_id', $user->usaha_id)->get();
+
         return view('dashboard.kategori.index', compact('kategori'));
     }
 
     public function store(Request $request)
     {
-        // ✅ VALIDASI (biar aman)
+        $user = Auth::user();
+
         $request->validate([
             'nama_kategori' => 'required|string|max:255',
         ]);
 
         Kategori::create([
-            'usaha_id' => 1, // 🔥 sementara (nanti bisa dari user login)
+            'usaha_id' => $user->usaha_id,
             'nama_kategori' => $request->nama_kategori
         ]);
 
@@ -32,19 +35,24 @@ class KategoriController extends Controller
 
     public function edit($id)
     {
-        $kategori = Kategori::findOrFail($id);
+        $user = Auth::user();
 
-        // ✅ FIX PATH VIEW
+        $kategori = Kategori::where('usaha_id', $user->usaha_id)
+            ->findOrFail($id);
+
         return view('dashboard.kategori.edit', compact('kategori'));
     }
 
     public function update(Request $request, $id)
     {
+        $user = Auth::user();
+
         $request->validate([
             'nama_kategori' => 'required|string|max:255',
         ]);
 
-        $kategori = Kategori::findOrFail($id);
+        $kategori = Kategori::where('usaha_id', $user->usaha_id)
+            ->findOrFail($id);
 
         $kategori->update([
             'nama_kategori' => $request->nama_kategori
@@ -56,7 +64,11 @@ class KategoriController extends Controller
 
     public function destroy($id)
     {
-        $kategori = Kategori::findOrFail($id);
+        $user = Auth::user();
+
+        $kategori = Kategori::where('usaha_id', $user->usaha_id)
+            ->findOrFail($id);
+
         $kategori->delete();
 
         return redirect()->back()->with('success', 'Kategori berhasil dihapus');

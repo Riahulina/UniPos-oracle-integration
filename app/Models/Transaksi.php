@@ -10,11 +10,12 @@ class Transaksi extends Model
 
     protected $fillable = [
         'usaha_id',
-        'user_id',        // ✅ WAJIB TAMBAH INI
-        'pelanggan_id',
+        'user_id',
+        'nama_pelanggan', // ✅ pakai ini
         'total',
         'bayar',
-        'kembalian'
+        'kembalian',
+        'status' 
     ];
 
     /*
@@ -29,16 +30,10 @@ class Transaksi extends Model
         return $this->belongsTo(Usaha::class);
     }
 
-    // 🔗 ke user (🔥 TAMBAH INI JUGA BIAR NAMA KASIR MUNCUL)
+    // 🔗 ke user (kasir login)
     public function user()
     {
         return $this->belongsTo(User::class);
-    }
-
-    // 🔗 ke pelanggan
-    public function pelanggan()
-    {
-        return $this->belongsTo(Pelanggan::class);
     }
 
     // 🔗 ke item transaksi
@@ -53,8 +48,15 @@ class Transaksi extends Model
     |--------------------------------------------------------------------------
     */
 
+    // jumlah total item
     public function getTotalItemAttribute()
     {
         return $this->items->sum('qty');
+    }
+
+    // 🔥 fallback nama pelanggan (biar ga null di view)
+    public function getNamaPelangganFixAttribute()
+    {
+        return $this->nama_pelanggan ?: 'Umum';
     }
 }

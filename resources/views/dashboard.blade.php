@@ -9,7 +9,7 @@
 
         /* ── GREETING ── */
         .dash-greet {
-            background: linear-gradient(135deg, #6499E9 100%);
+            background: linear-gradient(135deg, #adc9f8 0%, #54caed 55%, #7aa0f1 100%);
             border-radius: 20px;
             padding: 32px 36px;
             display: flex;
@@ -94,7 +94,7 @@
 
         .greet-name em {
             font-style: italic;
-            color: #d6bd04;
+            color: #FCD34D;
         }
 
         .greet-sub {
@@ -175,6 +175,10 @@
             background: #EF4444;
         }
 
+        .stat-card.c-amber::before {
+            background: #F59E0B;
+        }
+
         .stat-icon {
             width: 40px;
             height: 40px;
@@ -200,6 +204,10 @@
 
         .ic-red {
             background: #FEF2F2;
+        }
+
+        .ic-amber {
+            background: #FFFBEB;
         }
 
         .stat-label {
@@ -234,6 +242,10 @@
             color: #DC2626;
         }
 
+        .sv-amber {
+            color: #D97706;
+        }
+
         .stat-badge {
             display: inline-flex;
             align-items: center;
@@ -257,6 +269,11 @@
         .badge-neu {
             background: #EFF6FF;
             color: #3B82F6;
+        }
+
+        .badge-warn {
+            background: #FFFBEB;
+            color: #D97706;
         }
 
         /* ── BOTTOM GRID ── */
@@ -304,6 +321,7 @@
             transition: all .15s;
             background: transparent;
             color: #93A3B8;
+            font-family: 'DM Sans', system-ui, sans-serif;
         }
 
         .chart-tab.active {
@@ -344,7 +362,6 @@
         .bar-fill {
             width: 70%;
             border-radius: 6px 6px 0 0;
-            background: linear-gradient(180deg, #3B82F6, #1D4ED8);
             position: relative;
             transition: opacity .2s;
             cursor: pointer;
@@ -352,6 +369,10 @@
 
         .bar-fill.dim {
             background: linear-gradient(180deg, #BFDBFE, #93C5FD);
+        }
+
+        .bar-fill.active-bar {
+            background: linear-gradient(180deg, #3B82F6, #1D4ED8);
         }
 
         .bar-fill.gold {
@@ -368,35 +389,34 @@
             color: #93A3B8;
         }
 
-        /* y axis labels */
-        .chart-wrap {
-            position: relative;
-        }
-
-        .y-labels {
+        .bar-tooltip {
             position: absolute;
-            left: 0;
-            top: 10px;
-            bottom: 24px;
-            display: flex;
-            flex-direction: column;
-            justify-content: space-between;
-            pointer-events: none;
-        }
-
-        .y-label {
+            top: -28px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: #1E3A8A;
+            color: white;
             font-size: 9px;
-            color: #C7D2FE;
-            font-weight: 500;
+            font-weight: 600;
+            padding: 3px 6px;
+            border-radius: 5px;
+            white-space: nowrap;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity .15s;
         }
 
-        /* recent trx card */
+        .bar-fill:hover .bar-tooltip {
+            opacity: 1;
+        }
+
+        /* trx card */
         .trx-card {
             background: white;
             border-radius: 16px;
             border: 1px solid #EFF6FF;
             box-shadow: 0 2px 8px rgba(37, 99, 235, 0.06);
-            padding: 22px 22px;
+            padding: 22px;
             display: flex;
             flex-direction: column;
         }
@@ -482,6 +502,77 @@
             color: #1D4ED8;
         }
 
+        /* empty state */
+        .trx-empty {
+            text-align: center;
+            padding: 30px 16px;
+            color: #93A3B8;
+            font-size: 13px;
+        }
+
+        /* pending banner */
+        .pending-banner {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            background: white;
+            border: 1px solid #FEF3C7;
+            border-radius: 14px;
+            padding: 14px 18px;
+            margin-bottom: 20px;
+            box-shadow: 0 2px 8px rgba(245, 158, 11, 0.08);
+        }
+
+        .pending-icon {
+            width: 38px;
+            height: 38px;
+            border-radius: 10px;
+            background: #FFFBEB;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 18px;
+            flex-shrink: 0;
+        }
+
+        .pending-info {
+            flex: 1;
+        }
+
+        .pending-title {
+            font-size: 13px;
+            font-weight: 600;
+            color: #92400E;
+            margin-bottom: 2px;
+        }
+
+        .pending-sub {
+            font-size: 11.5px;
+            color: #B45309;
+        }
+
+        .pending-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+            background: #F59E0B;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            padding: 8px 14px;
+            font-size: 12px;
+            font-weight: 600;
+            cursor: pointer;
+            text-decoration: none;
+            font-family: 'DM Sans', system-ui, sans-serif;
+            white-space: nowrap;
+            transition: background .15s;
+        }
+
+        .pending-btn:hover {
+            background: #D97706;
+        }
+
         @media (max-width:1100px) {
             .stats-grid {
                 grid-template-columns: 1fr 1fr;
@@ -531,35 +622,86 @@
             </div>
         </div>
 
+        {{-- ── BANNER PESANAN PENDING (hanya tampil kalau ada) ── --}}
+        @if($totalPending > 0)
+        <div class="pending-banner">
+            <div class="pending-icon">🕐</div>
+            <div class="pending-info">
+                <div class="pending-title">
+                    Ada {{ $totalPending }} pesanan menunggu pembayaran
+                </div>
+                <div class="pending-sub">
+                    Pesanan ini belum lunas dan perlu segera diproses
+                </div>
+            </div>
+            <a href="{{ route('transaksi.pesanan') }}" class="pending-btn">
+                <svg width="12" height="12" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M2 6h8M6 2l4 4-4 4" />
+                </svg>
+                Lihat Pesanan
+            </a>
+        </div>
+        @endif
+
         {{-- ── STAT CARDS ── --}}
         <div class="stats-grid">
 
+            {{-- Penjualan hari ini --}}
             <div class="stat-card c-blue">
                 <div class="stat-icon ic-blue">💰</div>
                 <div class="stat-label">Penjualan Hari Ini</div>
-                <div class="stat-value sv-blue">Rp 3,2 Jt</div>
-                <span class="stat-badge badge-up">↑ 12% vs kemarin</span>
+                <div class="stat-value sv-blue">
+                    @if($penjualanHariIni >= 1000000)
+                    Rp {{ number_format($penjualanHariIni / 1000000, 1) }} Jt
+                    @elseif($penjualanHariIni >= 1000)
+                    Rp {{ number_format($penjualanHariIni / 1000, 0) }} Rb
+                    @else
+                    Rp {{ number_format($penjualanHariIni, 0, ',', '.') }}
+                    @endif
+                </div>
+                @if($penjualanPersen > 0)
+                <span class="stat-badge badge-up">↑ {{ $penjualanPersen }}% vs kemarin</span>
+                @elseif($penjualanPersen < 0)
+                    <span class="stat-badge badge-down">↓ {{ abs($penjualanPersen) }}% vs kemarin</span>
+                    @else
+                    <span class="stat-badge badge-neu">Sama seperti kemarin</span>
+                    @endif
             </div>
 
+            {{-- Total transaksi --}}
             <div class="stat-card c-indigo">
                 <div class="stat-icon ic-indigo">🧾</div>
-                <div class="stat-label">Total Transaksi</div>
-                <div class="stat-value sv-indigo">24</div>
-                <span class="stat-badge badge-up">↑ 4 transaksi</span>
+                <div class="stat-label">Transaksi Hari Ini</div>
+                <div class="stat-value sv-indigo">{{ $totalTrxHariIni }}</div>
+                @if($trxSelisih > 0)
+                <span class="stat-badge badge-up">↑ {{ $trxSelisih }} vs kemarin</span>
+                @elseif($trxSelisih < 0)
+                    <span class="stat-badge badge-down">↓ {{ abs($trxSelisih) }} vs kemarin</span>
+                    @else
+                    <span class="stat-badge badge-neu">{{ $totalTrxKemarin }} kemarin</span>
+                    @endif
             </div>
 
+            {{-- Total produk aktif --}}
             <div class="stat-card c-sky">
                 <div class="stat-icon ic-sky">📦</div>
-                <div class="stat-label">Total Produk</div>
-                <div class="stat-value sv-sky">120</div>
-                <span class="stat-badge badge-neu">Aktif semua</span>
+                <div class="stat-label">Produk Aktif</div>
+                <div class="stat-value sv-sky">{{ $totalProduk }}</div>
+                <span class="stat-badge badge-neu">Terdaftar di sistem</span>
             </div>
 
+            {{-- Stok menipis --}}
             <div class="stat-card c-red">
                 <div class="stat-icon ic-red">⚠️</div>
                 <div class="stat-label">Stok Menipis</div>
-                <div class="stat-value sv-red">8</div>
-                <span class="stat-badge badge-down">Perlu restok</span>
+                <div class="stat-value sv-red">{{ $stokMenipis }}</div>
+                @if($stokMenipis > 0)
+                <a href="{{ route('produk.index') }}" style="text-decoration:none;">
+                    <span class="stat-badge badge-down">Perlu restok</span>
+                </a>
+                @else
+                <span class="stat-badge badge-up">Stok aman</span>
+                @endif
             </div>
 
         </div>
@@ -567,122 +709,123 @@
         {{-- ── BOTTOM GRID ── --}}
         <div class="dash-bottom">
 
-            {{-- CHART --}}
+            {{-- CHART PENJUALAN 7 HARI --}}
             <div class="chart-card">
                 <div class="card-head">
                     <span class="card-title">Grafik Penjualan</span>
-                    <div class="chart-tabs">
-                        <button class="chart-tab active">Minggu</button>
-                        <button class="chart-tab">Bulan</button>
-                        <button class="chart-tab">Tahun</button>
+                    <div style="font-size:12px; color:#3B82F6; font-weight:600;">
+                        Total minggu ini:
+                        Rp {{ number_format($totalMingguIni, 0, ',', '.') }}
                     </div>
                 </div>
 
                 <div class="bar-chart">
+                    @php
+                    $grafikMax = $maxGrafik ?: 1;
+                    @endphp
+
+                    @foreach($grafik as $bar)
+                    @php
+                    $pct = $bar['total'] > 0
+                    ? max(4, round(($bar['total'] / $grafikMax) * 100))
+                    : 4;
+
+                    // Tentukan class bar
+                    $isMax = $bar['total'] === $grafikMax && $bar['total'] > 0;
+                    $isToday = $bar['today'];
+                    $barClass = $isMax ? 'gold' : ($isToday ? 'active-bar' : 'dim');
+
+                    // Format tooltip
+                    $tooltipVal = $bar['total'] >= 1000000
+                    ? 'Rp '.number_format($bar['total']/1000000, 1).' Jt'
+                    : ($bar['total'] >= 1000
+                    ? 'Rp '.number_format($bar['total']/1000, 0).' Rb'
+                    : 'Rp '.number_format($bar['total'], 0, ',', '.'));
+                    @endphp
                     <div class="bar-group">
                         <div class="bar-outer">
-                            <div class="bar-fill dim" style="height:55%;"></div>
+                            <div class="bar-fill {{ $barClass }}" style="height:{{ $pct }}%;">
+                                <div class="bar-tooltip">{{ $tooltipVal }}</div>
+                            </div>
                         </div>
-                        <div class="bar-label">Sen</div>
+                        <div class="bar-label">{{ $bar['label'] }}</div>
                     </div>
-                    <div class="bar-group">
-                        <div class="bar-outer">
-                            <div class="bar-fill dim" style="height:70%;"></div>
-                        </div>
-                        <div class="bar-label">Sel</div>
-                    </div>
-                    <div class="bar-group">
-                        <div class="bar-outer">
-                            <div class="bar-fill" style="height:85%;"></div>
-                        </div>
-                        <div class="bar-label">Rab</div>
-                    </div>
-                    <div class="bar-group">
-                        <div class="bar-outer">
-                            <div class="bar-fill dim" style="height:60%;"></div>
-                        </div>
-                        <div class="bar-label">Kam</div>
-                    </div>
-                    <div class="bar-group">
-                        <div class="bar-outer">
-                            <div class="bar-fill gold" style="height:100%;"></div>
-                        </div>
-                        <div class="bar-label">Jum</div>
-                    </div>
-                    <div class="bar-group">
-                        <div class="bar-outer">
-                            <div class="bar-fill dim" style="height:75%;"></div>
-                        </div>
-                        <div class="bar-label">Sab</div>
-                    </div>
-                    <div class="bar-group">
-                        <div class="bar-outer">
-                            <div class="bar-fill dim" style="height:40%;"></div>
-                        </div>
-                        <div class="bar-label">Min</div>
-                    </div>
+                    @endforeach
                 </div>
 
-                {{-- Chart legend --}}
                 <div style="display:flex;align-items:center;gap:16px;margin-top:16px;padding-top:14px;border-top:1px solid #EFF6FF;">
                     <div style="display:flex;align-items:center;gap:6px;font-size:11px;color:#93A3B8;">
-                        <div style="width:10px;height:10px;border-radius:3px;background:linear-gradient(#3B82F6,#1D4ED8);"></div> Penjualan
+                        <div style="width:10px;height:10px;border-radius:3px;background:linear-gradient(#3B82F6,#1D4ED8);"></div>
+                        Penjualan
                     </div>
                     <div style="display:flex;align-items:center;gap:6px;font-size:11px;color:#93A3B8;">
-                        <div style="width:10px;height:10px;border-radius:3px;background:linear-gradient(#FCD34D,#F59E0B);"></div> Tertinggi
+                        <div style="width:10px;height:10px;border-radius:3px;background:linear-gradient(#FCD34D,#F59E0B);"></div>
+                        Tertinggi
                     </div>
-                    <div style="margin-left:auto;font-size:11px;color:#3B82F6;font-weight:600;">Total: Rp 18,4 Jt</div>
+                    <div style="display:flex;align-items:center;gap:6px;font-size:11px;color:#93A3B8;">
+                        <div style="width:10px;height:10px;border-radius:3px;background:linear-gradient(#93C5FD,#BFDBFE);"></div>
+                        Hari lain
+                    </div>
                 </div>
             </div>
 
-            {{-- RECENT TRANSACTIONS --}}
+            {{-- TRANSAKSI TERBARU --}}
             <div class="trx-card">
                 <div class="card-head">
                     <span class="card-title">Transaksi Terbaru</span>
+                    <a href="{{ route('transaksi.index') }}"
+                        style="font-size:11px;color:#3B82F6;text-decoration:none;font-weight:600;">
+                        Semua →
+                    </a>
                 </div>
+
                 <div class="trx-list">
-                    <div class="trx-item">
-                        <div class="trx-ic" style="background:#EFF6FF;">☕</div>
-                        <div class="trx-info">
-                            <div class="trx-name">Kopi Susu Aren</div>
-                            <div class="trx-time">14:22 · Kasir A</div>
+                    @forelse($transaksiTerbaru as $trx)
+                    @php
+                    $icon = match(true) {
+                    $trx->items->count() > 0 && str_contains(strtolower($trx->items->first()->nama_produk ?? ''), 'kopi') => '☕',
+                    $trx->items->count() > 0 && str_contains(strtolower($trx->items->first()->nama_produk ?? ''), 'makan') => '🍱',
+                    $trx->items->count() > 0 && str_contains(strtolower($trx->items->first()->nama_produk ?? ''), 'minum') => '🥤',
+                    default => '🛒',
+                    };
+                    $bgColor = match(true) {
+                    str_contains($icon, '☕') => '#FFFBEB',
+                    str_contains($icon, '🍱') => '#ECFDF5',
+                    str_contains($icon, '🥤') => '#FFF7ED',
+                    default => '#EFF6FF',
+                    };
+                    $label = $trx->nama_pelanggan
+                    ?? ($trx->items->first()->nama_produk ?? 'Transaksi');
+                    $kasir = $trx->user->name ?? 'Admin';
+                    $shortAmt = $trx->total >= 1000000
+                    ? number_format($trx->total / 1000000, 1).' Jt'
+                    : ($trx->total >= 1000
+                    ? number_format($trx->total / 1000, 0).' Rb'
+                    : number_format($trx->total, 0, ',', '.'));
+                    @endphp
+                    <a href="{{ route('transaksi.show', $trx->id) }}"
+                        style="text-decoration:none;" class="trx-item">
+                        <div class="trx-ic" style="background:{{ $bgColor }};">
+                            {{ $icon }}
                         </div>
-                        <div class="trx-amt">28rb</div>
-                    </div>
-                    <div class="trx-item">
-                        <div class="trx-ic" style="background:#FFFBEB;">🛒</div>
                         <div class="trx-info">
-                            <div class="trx-name">Belanja Sembako</div>
-                            <div class="trx-time">13:47 · Kasir B</div>
+                            <div class="trx-name">{{ Str::limit($label, 24) }}</div>
+                            <div class="trx-time">
+                                {{ $trx->created_at->format('H:i') }} · {{ $kasir }}
+                            </div>
                         </div>
-                        <div class="trx-amt">127rb</div>
+                        <div class="trx-amt">{{ $shortAmt }}</div>
+                    </a>
+                    @empty
+                    <div class="trx-empty">
+                        Belum ada transaksi hari ini
                     </div>
-                    <div class="trx-item">
-                        <div class="trx-ic" style="background:#ECFDF5;">🍱</div>
-                        <div class="trx-info">
-                            <div class="trx-name">Paket Makan Siang</div>
-                            <div class="trx-time">12:30 · Kasir A</div>
-                        </div>
-                        <div class="trx-amt">45rb</div>
-                    </div>
-                    <div class="trx-item">
-                        <div class="trx-ic" style="background:#F5F3FF;">👕</div>
-                        <div class="trx-info">
-                            <div class="trx-name">Laundry Kiloan</div>
-                            <div class="trx-time">11:15 · Kasir A</div>
-                        </div>
-                        <div class="trx-amt">18rb</div>
-                    </div>
-                    <div class="trx-item">
-                        <div class="trx-ic" style="background:#FFF7ED;">🥤</div>
-                        <div class="trx-info">
-                            <div class="trx-name">Minuman Segar</div>
-                            <div class="trx-time">10:05 · Kasir B</div>
-                        </div>
-                        <div class="trx-amt">15rb</div>
-                    </div>
+                    @endforelse
                 </div>
-                <a href="#" class="view-all">Lihat Semua Transaksi →</a>
+
+                <a href="{{ route('transaksi.create') }}" class="view-all">
+                    + Transaksi Baru
+                </a>
             </div>
 
         </div>
@@ -702,14 +845,6 @@
         }
         updateTime();
         setInterval(updateTime, 1000);
-
-        // Chart tabs
-        document.querySelectorAll('.chart-tab').forEach(tab => {
-            tab.addEventListener('click', function() {
-                document.querySelectorAll('.chart-tab').forEach(t => t.classList.remove('active'));
-                this.classList.add('active');
-            });
-        });
     </script>
 
 </x-layout.sidebar>

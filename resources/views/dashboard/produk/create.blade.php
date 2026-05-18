@@ -3,11 +3,20 @@
     <style>
         @import url('https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500;9..40,600&display=swap');
 
-        .form-wrap * { box-sizing: border-box; }
-        .form-wrap { font-family: 'DM Sans', system-ui, sans-serif; max-width: 860px; }
+        .form-wrap * {
+            box-sizing: border-box;
+        }
+
+        .form-wrap {
+            font-family: 'DM Sans', system-ui, sans-serif;
+            max-width: 860px;
+        }
 
         /* ── HEADER ── */
-        .form-header { margin-bottom: 26px; }
+        .form-header {
+            margin-bottom: 26px;
+        }
+
         .form-breadcrumb {
             font-size: 12px;
             color: #93A3B8;
@@ -16,22 +25,34 @@
             align-items: center;
             gap: 6px;
         }
-        .form-breadcrumb a { color: #3B82F6; text-decoration: none; }
-        .form-breadcrumb a:hover { text-decoration: underline; }
+
+        .form-breadcrumb a {
+            color: #3B82F6;
+            text-decoration: none;
+        }
+
+        .form-breadcrumb a:hover {
+            text-decoration: underline;
+        }
+
         .form-title {
             font-family: 'DM Serif Display', Georgia, serif;
             font-size: 24px;
             color: #1E3A8A;
             letter-spacing: -0.6px;
         }
-        .form-title span { font-style: italic; color: #3B82F6; }
+
+        .form-title span {
+            font-style: italic;
+            color: #3B82F6;
+        }
 
         /* ── CARD ── */
         .form-card {
             background: white;
             border-radius: 18px;
             border: 1px solid #DBEAFE;
-            box-shadow: 0 2px 12px rgba(37,99,235,0.07);
+            box-shadow: 0 2px 12px rgba(37, 99, 235, 0.07);
             overflow: hidden;
         }
 
@@ -43,18 +64,33 @@
             padding: 18px 24px 14px;
             border-bottom: 1px solid #EFF6FF;
         }
-        .section-dot { width: 8px; height: 8px; border-radius: 50%; background: #3B82F6; flex-shrink: 0; }
+
+        .section-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: #3B82F6;
+            flex-shrink: 0;
+        }
+
         .section-label {
             font-family: 'DM Serif Display', Georgia, serif;
             font-size: 15px;
             color: #1E3A8A;
         }
 
-        .section-body { padding: 20px 24px; }
+        .section-body {
+            padding: 20px 24px;
+        }
 
         /* ── FIELD ── */
-        .field { margin-bottom: 16px; }
-        .field:last-child { margin-bottom: 0; }
+        .field {
+            margin-bottom: 16px;
+        }
+
+        .field:last-child {
+            margin-bottom: 0;
+        }
 
         .field-label {
             display: block;
@@ -64,7 +100,11 @@
             margin-bottom: 6px;
             letter-spacing: .01em;
         }
-        .field-label span { color: #DC2626; margin-left: 2px; }
+
+        .field-label span {
+            color: #DC2626;
+            margin-left: 2px;
+        }
 
         .field-inp,
         .field-select,
@@ -80,29 +120,48 @@
             outline: none;
             transition: border .15s, box-shadow .15s;
         }
+
         .field-inp:focus,
         .field-select:focus,
         .field-textarea:focus {
             border-color: #3B82F6;
-            box-shadow: 0 0 0 3px rgba(59,130,246,0.1);
+            box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
         }
-        .field-inp.error, .field-select.error { border-color: #FCA5A5; }
+
+        .field-inp.error,
+        .field-select.error {
+            border-color: #FCA5A5;
+        }
+
         .field-err {
             font-size: 11px;
             color: #DC2626;
             margin-top: 4px;
         }
+
         .field-hint {
             font-size: 11px;
             color: #93A3B8;
             margin-top: 4px;
         }
 
-        .field-textarea { resize: vertical; min-height: 70px; }
+        .field-textarea {
+            resize: vertical;
+            min-height: 70px;
+        }
 
         /* inline addon */
-        .inp-group { display: flex; gap: 0; }
-        .inp-group .field-inp { border-radius: 10px 0 0 10px; flex: 1; border-right: none; }
+        .inp-group {
+            display: flex;
+            gap: 0;
+        }
+
+        .inp-group .field-inp {
+            border-radius: 10px 0 0 10px;
+            flex: 1;
+            border-right: none;
+        }
+
         .inp-addon {
             background: #EFF6FF;
             border: 1.5px solid #BFDBFE;
@@ -118,11 +177,23 @@
             white-space: nowrap;
             transition: background .15s;
         }
-        .inp-addon:hover { background: #DBEAFE; }
+
+        .inp-addon:hover {
+            background: #DBEAFE;
+        }
 
         /* 2-col grid */
-        .field-grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
-        .field-grid-3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 14px; }
+        .field-grid-2 {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 14px;
+        }
+
+        .field-grid-3 {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr;
+            gap: 14px;
+        }
 
         /* ── GAMBAR UPLOAD ── */
         .img-upload-area {
@@ -135,7 +206,12 @@
             background: #F8FBFF;
             position: relative;
         }
-        .img-upload-area:hover { border-color: #3B82F6; background: #EFF6FF; }
+
+        .img-upload-area:hover {
+            border-color: #3B82F6;
+            background: #EFF6FF;
+        }
+
         .img-upload-area input[type=file] {
             position: absolute;
             inset: 0;
@@ -144,6 +220,7 @@
             width: 100%;
             height: 100%;
         }
+
         .img-preview {
             width: 100%;
             max-height: 160px;
@@ -152,9 +229,20 @@
             margin-bottom: 8px;
             display: none;
         }
-        .img-upload-icon { color: #BFDBFE; margin-bottom: 8px; }
-        .img-upload-text { font-size: 12.5px; color: #93A3B8; }
-        .img-upload-text strong { color: #3B82F6; }
+
+        .img-upload-icon {
+            color: #BFDBFE;
+            margin-bottom: 8px;
+        }
+
+        .img-upload-text {
+            font-size: 12.5px;
+            color: #93A3B8;
+        }
+
+        .img-upload-text strong {
+            color: #3B82F6;
+        }
 
         /* ── BARCODE PREVIEW ── */
         .barcode-preview-box {
@@ -167,9 +255,22 @@
             border-radius: 12px;
             margin-top: 8px;
         }
-        #barcode-svg svg { display: block; }
-        .barcode-info { font-size: 12px; color: #64748B; }
-        .barcode-info strong { display: block; color: #1E3A8A; font-size: 13px; margin-bottom: 2px; }
+
+        #barcode-svg svg {
+            display: block;
+        }
+
+        .barcode-info {
+            font-size: 12px;
+            color: #64748B;
+        }
+
+        .barcode-info strong {
+            display: block;
+            color: #1E3A8A;
+            font-size: 13px;
+            margin-bottom: 2px;
+        }
 
         /* ── TOGGLE (is_jasa, status) ── */
         .toggle-row {
@@ -181,16 +282,34 @@
             border: 1.5px solid #EFF6FF;
             border-radius: 10px;
         }
-        .toggle-info { }
-        .toggle-label { font-size: 13px; font-weight: 600; color: #1E3A8A; }
-        .toggle-sub { font-size: 11px; color: #93A3B8; margin-top: 2px; }
+
+        .toggle-info {}
+
+        .toggle-label {
+            font-size: 13px;
+            font-weight: 600;
+            color: #1E3A8A;
+        }
+
+        .toggle-sub {
+            font-size: 11px;
+            color: #93A3B8;
+            margin-top: 2px;
+        }
+
         .toggle-switch {
             position: relative;
             width: 42px;
             height: 24px;
             flex-shrink: 0;
         }
-        .toggle-switch input { opacity: 0; width: 0; height: 0; }
+
+        .toggle-switch input {
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+
         .toggle-slider {
             position: absolute;
             inset: 0;
@@ -199,6 +318,7 @@
             cursor: pointer;
             transition: background .2s;
         }
+
         .toggle-slider::before {
             content: '';
             position: absolute;
@@ -209,10 +329,16 @@
             top: 3px;
             left: 3px;
             transition: transform .2s;
-            box-shadow: 0 1px 3px rgba(0,0,0,0.15);
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.15);
         }
-        .toggle-switch input:checked + .toggle-slider { background: #1D4ED8; }
-        .toggle-switch input:checked + .toggle-slider::before { transform: translateX(18px); }
+
+        .toggle-switch input:checked+.toggle-slider {
+            background: #1D4ED8;
+        }
+
+        .toggle-switch input:checked+.toggle-slider::before {
+            transform: translateX(18px);
+        }
 
         /* ── FOOTER ACTIONS ── */
         .form-footer {
@@ -224,6 +350,7 @@
             border-top: 1px solid #EFF6FF;
             background: #FAFCFF;
         }
+
         .btn-cancel {
             padding: 10px 20px;
             border: 1.5px solid #BFDBFE;
@@ -237,7 +364,12 @@
             text-decoration: none;
             transition: all .15s;
         }
-        .btn-cancel:hover { background: #EFF6FF; color: #1D4ED8; }
+
+        .btn-cancel:hover {
+            background: #EFF6FF;
+            color: #1D4ED8;
+        }
+
         .btn-save {
             padding: 10px 24px;
             border: none;
@@ -250,14 +382,28 @@
             cursor: pointer;
             transition: all .15s;
         }
-        .btn-save:hover { background: #1E40AF; transform: translateY(-1px); }
+
+        .btn-save:hover {
+            background: #1E40AF;
+            transform: translateY(-1px);
+        }
 
         /* divider between sections */
-        .form-divider { height: 1px; background: #EFF6FF; }
+        .form-divider {
+            height: 1px;
+            background: #EFF6FF;
+        }
 
         @media (max-width: 600px) {
-            .field-grid-2, .field-grid-3 { grid-template-columns: 1fr; }
-            .section-body { padding: 16px; }
+
+            .field-grid-2,
+            .field-grid-3 {
+                grid-template-columns: 1fr;
+            }
+
+            .section-body {
+                padding: 16px;
+            }
         }
     </style>
 
@@ -280,8 +426,7 @@
             action="{{ isset($produk) ? route('produk.update', $produk->id) : route('produk.store') }}"
             method="POST"
             enctype="multipart/form-data"
-            id="produk-form"
-        >
+            id="produk-form">
             @csrf
             @if(isset($produk)) @method('PUT') @endif
 
@@ -303,8 +448,7 @@
                             value="{{ old('nama_produk', $produk->nama_produk ?? '') }}"
                             placeholder="Contoh: Kopi Susu Aren 500ml"
                             required
-                            oninput="suggestKode(this.value)"
-                        >
+                            oninput="suggestKode(this.value)">
                         @error('nama_produk') <div class="field-err">{{ $message }}</div> @enderror
                     </div>
 
@@ -313,13 +457,12 @@
                         <select
                             class="field-select {{ $errors->has('kategori_id') ? 'error' : '' }}"
                             name="kategori_id"
-                            required
-                        >
+                            required>
                             <option value="">— Pilih Kategori —</option>
                             @foreach($kategori as $k)
-                                <option value="{{ $k->id }}" {{ old('kategori_id', $produk->kategori_id ?? '') == $k->id ? 'selected' : '' }}>
-                                    {{ $k->nama_kategori }}
-                                </option>
+                            <option value="{{ $k->id }}" {{ old('kategori_id', $produk->kategori_id ?? '') == $k->id ? 'selected' : '' }}>
+                                {{ $k->nama_kategori }}
+                            </option>
                             @endforeach
                         </select>
                         @error('kategori_id') <div class="field-err">{{ $message }}</div> @enderror
@@ -335,8 +478,7 @@
                                 id="kode-produk"
                                 value="{{ old('kode_produk', $produk->kode_produk ?? '') }}"
                                 placeholder="Auto-generate dari nama"
-                                oninput="renderBarcode(this.value || document.getElementById('barcode').value)"
-                            >
+                                oninput="renderBarcode(this.value || document.getElementById('barcode').value)">
                             <div class="field-hint">Bisa diisi manual atau otomatis dari nama produk</div>
                         </div>
                         <div class="field">
@@ -349,8 +491,7 @@
                                     id="barcode"
                                     value="{{ old('barcode', $produk->barcode ?? '') }}"
                                     placeholder="Kosongkan = auto generate"
-                                    oninput="renderBarcode(this.value)"
-                                >
+                                    oninput="renderBarcode(this.value)">
                                 <div class="inp-addon" onclick="generateBarcode()" title="Generate otomatis">⟳ Generate</div>
                             </div>
                             @error('barcode') <div class="field-err">{{ $message }}</div> @enderror
@@ -374,8 +515,7 @@
                             type="text"
                             name="satuan"
                             value="{{ old('satuan', $produk->satuan ?? '') }}"
-                            placeholder="pcs, kg, lusin, botol, …"
-                        >
+                            placeholder="pcs, kg, lusin, botol, …">
                     </div>
 
                 </div>
@@ -399,8 +539,7 @@
                                 value="{{ old('harga_beli', $produk->harga_beli ?? 0) }}"
                                 placeholder="0"
                                 min="0"
-                                oninput="calcMargin()"
-                            >
+                                oninput="calcMargin()">
                         </div>
                         <div class="field">
                             <label class="field-label">Harga Jual <span>*</span></label>
@@ -413,8 +552,7 @@
                                 placeholder="0"
                                 min="0"
                                 required
-                                oninput="calcMargin()"
-                            >
+                                oninput="calcMargin()">
                             @error('harga_jual') <div class="field-err">{{ $message }}</div> @enderror
                         </div>
                     </div>
@@ -434,8 +572,7 @@
                                 value="{{ old('stok', $produk->stok ?? 0) }}"
                                 placeholder="0"
                                 min="0"
-                                id="stok-field"
-                            >
+                                id="stok-field">
                         </div>
                         <div class="field">
                             <label class="field-label">Stok Minimal</label>
@@ -445,8 +582,7 @@
                                 name="stok_minimal"
                                 value="{{ old('stok_minimal', $produk->stok_minimal ?? 0) }}"
                                 placeholder="0"
-                                min="0"
-                            >
+                                min="0">
                             <div class="field-hint">Notifikasi stok menipis di bawah angka ini</div>
                         </div>
                     </div>
@@ -464,14 +600,13 @@
                     <div class="img-upload-area" id="img-drop-area">
                         <input type="file" name="gambar" id="img-input" accept="image/*" onchange="previewImg(event)">
                         <img class="img-preview" id="img-preview"
-                             src="{{ isset($produk) && $produk->gambar ? asset('storage/'.$produk->gambar) : '' }}"
-                             style="{{ isset($produk) && $produk->gambar ? 'display:block;' : '' }}"
-                        >
+                            src="{{ isset($produk) && $produk->gambar ? asset('storage/'.$produk->gambar) : '' }}"
+                            style="{{ isset($produk) && $produk->gambar ? 'display:block;' : '' }}">
                         <div class="img-upload-icon" id="img-placeholder" style="{{ isset($produk) && $produk->gambar ? 'display:none;' : '' }}">
                             <svg width="36" height="36" viewBox="0 0 36 36" fill="none" stroke="#BFDBFE" stroke-width="1.5">
-                                <rect x="4" y="4" width="28" height="28" rx="4"/>
-                                <circle cx="14" cy="14" r="3"/>
-                                <path d="M4 24l9-9 6 6 5-5 8 8"/>
+                                <rect x="4" y="4" width="28" height="28" rx="4" />
+                                <circle cx="14" cy="14" r="3" />
+                                <path d="M4 24l9-9 6 6 5-5 8 8" />
                             </svg>
                             <div class="img-upload-text">
                                 <strong>Klik untuk upload</strong> atau drag & drop<br>
@@ -498,8 +633,7 @@
                         <label class="toggle-switch">
                             <input type="checkbox" name="is_jasa" value="1" id="is-jasa"
                                 {{ old('is_jasa', $produk->is_jasa ?? false) ? 'checked' : '' }}
-                                onchange="toggleJasa(this.checked)"
-                            >
+                                onchange="toggleJasa(this.checked)">
                             <span class="toggle-slider"></span>
                         </label>
                     </div>
@@ -511,8 +645,7 @@
                         </div>
                         <label class="toggle-switch">
                             <input type="checkbox" name="status_aktif" value="1" id="status-aktif"
-                                {{ old('status', $produk->status ?? 'aktif') === 'aktif' ? 'checked' : '' }}
-                            >
+                                {{ old('status', $produk->status ?? 'aktif') === 'aktif' ? 'checked' : '' }}>
                             <span class="toggle-slider"></span>
                         </label>
                         {{-- hidden field untuk status enum --}}
@@ -535,7 +668,7 @@
     </div>
 
     {{-- JsBarcode CDN --}}
-    <script src="https://cdn.jsdelivr.net/npm/jsbarcode@3.11.6/dist/JsBarcode.all.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/qrcodejs@1.0.0/qrcode.min.js"></script>
 
     <script>
         // ── IMAGE PREVIEW ──
@@ -577,23 +710,18 @@
                 document.getElementById('barcode-preview-box').style.display = 'none';
                 return;
             }
-            try {
-                const svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
-                JsBarcode(svg, code, {
-                    format: 'CODE128',
-                    width: 1.8,
-                    height: 50,
-                    displayValue: false,
-                    margin: 0,
-                });
-                const barcodeEl = document.getElementById('barcode-svg');
-                barcodeEl.innerHTML = '';
-                barcodeEl.appendChild(svg);
-                document.getElementById('barcode-text-display').textContent = code;
-                document.getElementById('barcode-preview-box').style.display = 'flex';
-            } catch (e) {
-                document.getElementById('barcode-preview-box').style.display = 'none';
-            }
+
+            const container = document.getElementById('barcode-svg');
+            container.innerHTML = '';
+
+            new QRCode(container, {
+                text: code,
+                width: 100,
+                height: 100
+            });
+
+            document.getElementById('barcode-text-display').textContent = code;
+            document.getElementById('barcode-preview-box').style.display = 'flex';
         }
 
         // Init render jika ada barcode existing

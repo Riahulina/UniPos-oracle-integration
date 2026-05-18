@@ -752,7 +752,14 @@
                     <div class="meta-row">
                         <span class="meta-lbl">Kasir</span>
                         <span class="meta-val">
-                            {{ $kasir->name ?? 'Kasir' }}
+                            {{ $transaksi->user->name ?? 'Kasir' }}
+                        </span>
+                    </div>
+
+                    <div class="meta-row">
+                        <span class="meta-lbl">Pelanggan</span>
+                        <span class="meta-val">
+                            {{ $transaksi->nama_pelanggan ?? 'Umum' }}
                         </span>
                     </div>
                     <div class="meta-row">
@@ -873,20 +880,23 @@
 
     </div>
 
-    <script src="https://cdn.jsdelivr.net/npm/jsbarcode@3.11.6/dist/JsBarcode.all.min.js"></script>
+    <!-- QR CODE LIBRARY -->
+    <script src="https://cdn.jsdelivr.net/npm/qrcodejs/qrcode.min.js"></script>
+
     <script>
         const code = 'TRX{{ str_pad($transaksi->id, 6, "0", STR_PAD_LEFT) }}';
-        const svgEl = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
-        JsBarcode(svgEl, code, {
-            format: 'CODE128',
-            width: 1.4,
-            height: 40,
-            displayValue: false,
-            margin: 0,
-            background: 'transparent',
-            lineColor: '#1E3A8A',
+
+        const container = document.getElementById("struk-barcode-svg");
+        container.innerHTML = ""; // reset
+
+        new QRCode(container, {
+            text: code,
+            width: 90,
+            height: 90,
+            colorDark: "#1E3A8A",
+            colorLight: "#ffffff",
+            correctLevel: QRCode.CorrectLevel.H
         });
-        document.getElementById('struk-barcode-svg').appendChild(svgEl);
     </script>
 
 </x-layout.sidebar>

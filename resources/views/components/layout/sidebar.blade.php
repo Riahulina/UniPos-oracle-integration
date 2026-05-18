@@ -8,7 +8,9 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@700;800&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@700;800&family=Inter:wght@300;400;500;600&display=swap"
+        rel="stylesheet">
 
     <style>
         :root {
@@ -599,20 +601,20 @@
 
             {{-- Brand --}}
             <div class="sb-brand">
-                @if(auth()->user()->usaha && auth()->user()->usaha->logo)
-                <img src="{{ asset('storage/logo_usaha/'.auth()->user()->usaha->logo) }}" class="sb-logo-img">
+                @if (auth()->user()->usaha && auth()->user()->usaha->logo)
+                    <img src="{{ asset('storage/logo_usaha/' . auth()->user()->usaha->logo) }}" class="sb-logo-img">
                 @else
-                <div class="sb-brand-icon">⚡</div>
+                    <div class="sb-brand-icon">⚡</div>
                 @endif
                 <a href="{{ route('welcome') }}" class="sb-brand-name">Uni<span>POS</span></a>
             </div>
 
             {{-- Usaha chip --}}
-            @if(auth()->user()->usaha)
-            <div class="sb-usaha">
-                <div class="sb-usaha-label">Usaha Aktif</div>
-                <div class="sb-usaha-name">{{ auth()->user()->usaha->nama_usaha ?? 'Nama Usaha' }}</div>
-            </div>
+            @if (auth()->user()->usaha)
+                <div class="sb-usaha">
+                    <div class="sb-usaha-label">Usaha Aktif</div>
+                    <div class="sb-usaha-name">{{ auth()->user()->usaha->nama_usaha ?? 'Nama Usaha' }}</div>
+                </div>
             @endif
 
             {{-- Navigation --}}
@@ -620,14 +622,30 @@
 
                 <div class="sb-section-label">Menu Utama</div>
 
-                <a href="{{ route('dashboard') }}" class="sb-link {{ request()->routeIs('dashboard') ? 'active' : '' }}">
+                <a href="{{ route('dashboard') }}"
+                    class="sb-link {{ request()->routeIs('dashboard') ? 'active' : '' }}">
                     <div class="sb-link-icon">📊</div> Dashboard
                 </a>
 
+                {{-- 💰 TRANSAKSI (POS / KASIR) --}}
                 <a href="{{ route('transaksi.index') }}"
-                    class="sb-link {{ request()->routeIs('transaksi*') ? 'active' : '' }}">
+                    class="sb-link {{ request()->routeIs('transaksi.index') ? 'active' : '' }}">
                     <div class="sb-link-icon">💰</div> Transaksi
                 </a>
+
+                {{-- ⏳ PESANAN PENDING --}}
+                <a href="{{ route('transaksi.pesanan') }}"
+                    class="sb-link {{ request()->routeIs('transaksi.pesanan') ? 'active' : '' }}">
+                    <div class="sb-link-icon">⏳</div> Pesanan Pending
+                </a>
+
+                {{-- 🧾 RIWAYAT LUNAS --}}
+                <a href="{{ route('transaksi.riwayat') }}"
+                    class="sb-link {{ request()->routeIs('transaksi.riwayat') ? 'active' : '' }}">
+                    <div class="sb-link-icon">🧾</div> Riwayat Transaksi
+                </a>
+
+                <div class="sb-section-label">Data Master</div>
 
                 <a href="{{ route('kategori.index') }}"
                     class="sb-link {{ request()->routeIs('kategori*') ? 'active' : '' }}">
@@ -635,40 +653,62 @@
                 </a>
 
                 <a href="{{ route('produk.index') }}"
-                    class="sb-link {{ request()->routeIs('produk.*') ? 'active' : '' }}">
+                    class="sb-link {{ request()->routeIs('produk*') ? 'active' : '' }}">
                     <div class="sb-link-icon">📦</div> Produk
                 </a>
+
                 <a href="{{ route('barcode.index') }}"
                     class="sb-link {{ request()->routeIs('barcode*') ? 'active' : '' }}">
                     <div class="sb-link-icon">📁</div> Barcode
                 </a>
 
-
-                <a href="#" class="sb-link {{ request()->routeIs('pelanggan*') ? 'active' :'' }}">
-                    <div class="sb-link-icon">👥</div> Pelanggan
-                </a>
-
                 <div class="sb-section-label">Laporan & Sistem</div>
 
-                <a href="#" class="sb-link {{ request()->routeIs('laporan*') ? 'active' : '' }}">
+                <a href="{{ route('laporan') }}" class="sb-link {{ request()->routeIs('laporan') ? 'active' : '' }}">
                     <div class="sb-link-icon">📑</div> Laporan
                 </a>
+                <a href="{{ route('absensi.index') }}"
+                    class="sb-link {{ request()->routeIs('absensi.*') ? 'active' : '' }}">
 
-                <a href="#" class="sb-link {{ request()->routeIs('pengaturan*') ? 'active' : '' }}">
-                    <div class="sb-link-icon">⚙️</div> Pengaturan
+                    <div class="sb-link-icon">🕒</div>
+
+                    Absensi
+
+                </a>
+                <a href="{{ route('karyawan.index') }}"
+                    class="sb-link {{ request()->routeIs('karyawan.*') ? 'active' : '' }}">
+
+                    <div class="sb-link-icon">👥</div>
+
+                    Karyawan
+
                 </a>
 
             </nav>
 
             {{-- CTA --}}
             <div class="sb-footer">
-                <button class="sb-trx-btn">
-                    <svg width="15" height="15" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
-                        <line x1="12" y1="5" x2="12" y2="19" />
-                        <line x1="5" y1="12" x2="19" y2="12" />
-                    </svg>
-                    Transaksi Baru
-                </button>
+
+                <form method="POST" action="{{ route('logout') }}">
+                    @csrf
+
+                    <button type="submit" class="sb-trx-btn">
+
+                        <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"
+                            viewBox="0 0 24 24">
+
+                            <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4" />
+                            <polyline points="16 17 21 12 16 7" />
+                            <line x1="21" y1="12" x2="9" y2="12" />
+
+                        </svg>
+
+                        Keluar dari Akun
+
+                    </button>
+
+                </form>
+
             </div>
 
         </aside>
@@ -680,7 +720,8 @@
             <header class="topbar">
 
                 <div class="search-wrap">
-                    <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                    <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2"
+                        viewBox="0 0 24 24">
                         <circle cx="11" cy="11" r="8" />
                         <line x1="21" y1="21" x2="16.65" y2="16.65" />
                     </svg>
@@ -689,13 +730,7 @@
 
                 <div class="topbar-right">
 
-                    <div class="notif-btn">
-                        <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" style="color:var(--primary)">
-                            <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9" />
-                            <path d="M13.73 21a2 2 0 0 1-3.46 0" />
-                        </svg>
-                        <div class="notif-badge">3</div>
-                    </div>
+
 
                     <div style="position:relative;">
                         <div class="profile-btn" onclick="toggleProfile()">
@@ -703,7 +738,8 @@
                                 {{ strtoupper(substr(auth()->user()->name, 0, 1)) }}
                             </div>
                             <span class="profile-name">{{ auth()->user()->name }}</span>
-                            <svg class="profile-chevron" width="12" height="12" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
+                            <svg class="profile-chevron" width="12" height="12" fill="none"
+                                stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
                                 <polyline points="6 9 12 15 18 9" />
                             </svg>
                         </div>
@@ -728,7 +764,8 @@
                                 </div>
                                 <div class="dd-row">
                                     <span class="dd-key">Status</span>
-                                    <span class="dd-val" style="color:#16a34a;">● {{ ucfirst(auth()->user()->status ?? 'aktif') }}</span>
+                                    <span class="dd-val" style="color:#16a34a;">●
+                                        {{ ucfirst(auth()->user()->status ?? 'aktif') }}</span>
                                 </div>
                             </div>
 

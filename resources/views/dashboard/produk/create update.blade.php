@@ -495,21 +495,11 @@
     {{-- Produk data untuk lookup scan barcode --}}
     <script>
         // Data produk dari DB — untuk lookup saat scan barcode
-        // Field disesuaikan dengan skema: nama_produk, harga_jual, barcode
-        const PRODUK_DB = @json($produk->map(fn($p) => [
-            'id'          => $p->id,
-            'nama_produk' => $p->nama_produk,
-            'harga_jual'  => (float) $p->harga_jual,
-            'stok'        => $p->stok,
-            'satuan'      => $p->satuan,
-            'is_jasa'     => (bool) $p->is_jasa,
-            'barcode'     => $p->barcode,
-            'kode_produk' => $p->kode_produk,
-            'gambar'      => $p->gambar ? asset('storage/' . $p->gambar) : null,
-        ]));
-
-        // ── CART STATE ──────────────────────────────
+         const PRODUK_DB = @json($produk);
         let cart = [];
+        let orderMode = 'order';
+
+       
 
         function fmt(n) {
             return 'Rp ' + Math.round(n).toLocaleString('id-ID');

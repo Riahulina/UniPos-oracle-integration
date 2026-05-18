@@ -6,22 +6,30 @@ use App\Models\Produk;
 use App\Models\Kategori;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Str;
 
 class ProdukController extends Controller
 {
     public function index()
     {
+        $user = Auth::user();
+
         $produk = Produk::with('kategori')
-            ->where('usaha_id', auth()->user()->usaha_id)
+            ->where('usaha_id', $user->usaha_id)
             ->latest()
             ->paginate(24);
 
-        $kategori    = Kategori::where('usaha_id', auth()->user()->usaha_id)->get();
-        $totalProduk = Produk::where('usaha_id', auth()->user()->usaha_id)->count();
-        $totalAktif  = Produk::where('usaha_id', auth()->user()->usaha_id)->where('status', 'aktif')->count();
+        $kategori = Kategori::where('usaha_id', $user->usaha_id)->get();
+
+        $totalProduk = Produk::where('usaha_id', $user->usaha_id)->count();
+        $totalAktif  = Produk::where('usaha_id', $user->usaha_id)
+            ->where('status', 'aktif')
+            ->count();
+
         $totalKategori = $kategori->count();
-        $stokMenipis = Produk::where('usaha_id', auth()->user()->usaha_id)
+
+        $stokMenipis = Produk::where('usaha_id', $user->usaha_id)
             ->where('is_jasa', false)
             ->whereColumn('stok', '<=', 'stok_minimal')
             ->count();
@@ -38,12 +46,16 @@ class ProdukController extends Controller
 
     public function create()
     {
-        $kategori = Kategori::where('usaha_id', auth()->user()->usaha_id)->get();
+        $user = Auth::user();
+        $kategori = Kategori::where('usaha_id', $user->usaha_id)->get();
+
         return view('dashboard.produk.create', compact('kategori'));
     }
 
     public function store(Request $request)
     {
+        $user = Auth::user();
+
         $request->validate([
             'nama_produk'  => 'required|string|max:255',
             'kategori_id'  => 'required|exists:kategori,id',
@@ -67,7 +79,7 @@ class ProdukController extends Controller
         }
 
         Produk::create([
-            'usaha_id'     => auth()->user()->usaha_id,
+            'usaha_id'     => $user->usaha_id,
             'kategori_id'  => $request->kategori_id,
             'kode_produk'  => $request->kode_produk,
             'barcode'      => $barcode,
@@ -89,7 +101,9 @@ class ProdukController extends Controller
     public function edit(Produk $produk)
     {
         $this->authorizeOwner($produk);
-        $kategori = Kategori::where('usaha_id', auth()->user()->usaha_id)->get();
+
+        $user = Auth::user();
+        $kategori = Kategori::where('usaha_id', $user->usaha_id)->get();
 
         return view('dashboard.produk.create', compact('produk', 'kategori'));
     }
@@ -113,6 +127,7 @@ class ProdukController extends Controller
         ]);
 
         $gambarPath = $produk->gambar;
+
         if ($request->hasFile('gambar')) {
             if ($produk->gambar) {
                 Storage::disk('public')->delete($produk->gambar);
@@ -157,8 +172,10 @@ class ProdukController extends Controller
 
     private function authorizeOwner(Produk $produk): void
     {
+        $user = Auth::user();
+
         abort_if(
-            $produk->usaha_id !== auth()->user()->usaha_id,
+            $produk->usaha_id !== $user->usaha_id,
             403,
             'Akses ditolak.'
         );
