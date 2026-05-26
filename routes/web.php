@@ -11,6 +11,8 @@ use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\LaporanController;
 use App\Http\Controllers\AbsensiController;
 use App\Http\Controllers\KaryawanController;
+use App\Http\Controllers\SuperAdminController;
+use App\Http\Controllers\SuperAdminAuthController;
 
 
 Route::get('/', function () {
@@ -184,4 +186,86 @@ Route::middleware(['auth'])->group(function () {
     Route::delete('/karyawan/{user}', [KaryawanController::class, 'destroy'])
         ->name('karyawan.destroy');
 });
+
+Route::get('/pending-approval', function () {
+    return view('auth.pending');
+})->name('pending.approval');
+
+
+/*
+|--------------------------------------------------------------------------
+| Super Admin
+|--------------------------------------------------------------------------
+*/
+
+
+Route::middleware(['auth', 'superadmin'])
+    ->prefix('superadmin')
+    ->name('superadmin.')
+    ->group(function () {
+
+        Route::get('/dashboard', [SuperAdminController::class, 'dashboard'])
+            ->name('dashboard');
+
+        Route::get('/usaha', [SuperAdminController::class, 'usaha'])
+            ->name('usaha');
+
+        Route::put('/usaha/{id}/approve', [SuperAdminController::class, 'approve'])
+            ->name('usaha.approve');
+
+        Route::put('/usaha/{id}/reject', [SuperAdminController::class, 'reject'])
+            ->name('usaha.reject');
+
+        Route::get('/user', [SuperAdminController::class, 'user'])
+            ->name('user');
+
+        Route::put('/user/{id}/toggle', [SuperAdminController::class, 'toggleUser'])
+            ->name('user.toggle');
+
+        Route::get('/produk', [SuperAdminController::class, 'produk'])
+            ->name('produk');
+
+        Route::get('/transaksi', [SuperAdminController::class, 'transaksi'])
+            ->name('transaksi');
+
+        Route::get('/stoklog', [SuperAdminController::class, 'stoklog'])
+            ->name('stoklog');
+
+        Route::get('/absensi', [SuperAdminController::class, 'absensi'])
+            ->name('absensi');
+
+        Route::get('/setting', [SuperAdminController::class, 'setting'])
+            ->name('setting');
+    });
+
+// ─────────────────────────────────────────────────────────
+// Route login khusus per usaha (akses dari link WA)
+// Taruh di luar middleware superadmin
+// ─────────────────────────────────────────────────────────
+Route::get('/login/{kode}', function ($kode) {
+
+    $usaha = \App\Models\Usaha::where('kode_usaha', $kode)
+        ->where('status', 'aktif')
+        ->firstOrFail();
+
+    return view('auth.login', [
+        'usaha' => $usaha
+    ]);
+})->name('usaha.login');
+
+
+/*
+|--------------------------------------------------------------------------
+| Super Admin login
+|--------------------------------------------------------------------------
+*/
+Route::middleware('guest')->group(function () {
+    Route::get('/superadmin/login', [SuperAdminAuthController::class, 'create'])
+        ->name('superadmin.login');
+
+    Route::post('/superadmin/login', [SuperAdminAuthController::class, 'store'])
+        ->name('superadmin.login.store');
+});
+
+
 require __DIR__ . '/auth.php';

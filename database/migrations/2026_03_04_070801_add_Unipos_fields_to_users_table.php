@@ -11,20 +11,20 @@ return new class extends Migration
      */
     public function up(): void
     {
-    Schema::table('users', function (Blueprint $table) {
-        $table->foreignId('usaha_id')
-              ->nullable()
-              ->constrained('usaha')
-              ->onDelete('cascade');
+        Schema::table('users', function (Blueprint $table) {
+            $table->foreignId('usaha_id')
+                ->nullable()
+                ->constrained('usaha')
+                ->onDelete('cascade');
 
-        $table->enum('role', ['owner','admin','kasir'])
-              ->default('kasir');
+            $table->enum('role', ['super_admin', 'owner', 'admin', 'kasir'])
+                ->default('kasir');
 
-        $table->string('pin')->nullable();
+            $table->string('pin')->nullable();
 
-        $table->enum('status', ['aktif','nonaktif'])
-              ->default('aktif');
-    });
+            $table->enum('status', ['aktif', 'nonaktif'])
+                ->default('aktif');
+        });
     }
 
     /**

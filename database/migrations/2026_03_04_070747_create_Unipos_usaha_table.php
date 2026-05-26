@@ -11,15 +11,30 @@ return new class extends Migration
      */
     public function up(): void
     {
-    Schema::create('usaha', function (Blueprint $table) {
-    $table->id();
-    $table->string('kode_usaha')->unique();
-    $table->string('nama_usaha');
-    $table->text('alamat')->nullable();
-    $table->string('telp')->nullable();
-    $table->string('logo')->nullable();
-    $table->timestamps();
-});
+        Schema::create('usaha', function (Blueprint $table) {
+            $table->id();
+
+            $table->string('kode_usaha')->unique();
+
+            $table->string('nama_usaha');
+
+            $table->text('alamat')->nullable();
+
+            $table->string('telp')->nullable();
+
+            $table->string('logo')->nullable();
+
+            // pending | aktif | ditolak
+            $table->string('status')->default('pending');
+
+            // catatan super admin kalau perlu
+            $table->text('catatan')->nullable();
+
+            // waktu approve
+            $table->timestamp('approved_at')->nullable();
+
+            $table->timestamps();
+        });
     }
 
     /**

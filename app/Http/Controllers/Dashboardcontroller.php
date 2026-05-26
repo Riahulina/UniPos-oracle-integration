@@ -12,10 +12,16 @@ class DashboardController extends Controller
 {
     public function index()
     {
-        $user     = Auth::user();
-        $usahaId  = $user->usaha_id;
-        $today    = Carbon::today();
-        $yesterday= Carbon::yesterday();
+        $user = Auth::user();
+
+        // SUPER ADMIN → dashboard sendiri
+        if ($user->role === 'super_admin') {
+            return redirect()->route('superadmin.dashboard');
+        }
+
+        $usahaId = $user->usaha_id;
+        $today = Carbon::today();
+        $yesterday = Carbon::yesterday();
 
         // ── PENJUALAN HARI INI ──────────────────────────────────
         $penjualanHariIni = Transaksi::where('usaha_id', $usahaId)

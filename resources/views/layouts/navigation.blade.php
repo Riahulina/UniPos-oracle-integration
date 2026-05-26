@@ -240,31 +240,28 @@
 
         <!-- LINKS DESKTOP -->
         <div class="nav-links">
-            <a href="{{ route('welcome') }}"
-                class="nav-link {{ request()->is('/') ? 'active' : '' }}">
+            <a href="{{ route('welcome') }}" class="nav-link {{ request()->is('/') ? 'active' : '' }}">
                 Home
             </a>
-            <a href="/fitur"
-                class="nav-link {{ request()->is('fitur') ? 'active' : '' }}">
+            <a href="/fitur" class="nav-link {{ request()->is('fitur') ? 'active' : '' }}">
                 Fitur
             </a>
-            <a href="/about"
-                class="nav-link {{ request()->is('about') ? 'active' : '' }}">
+            <a href="/about" class="nav-link {{ request()->is('about') ? 'active' : '' }}">
                 Tentang
             </a>
         </div>
 
         <!-- CTA DESKTOP -->
         <div class="nav-actions">
-            <a href="/login" class="nav-btn-ghost">Masuk</a>
             <a href="/register-usaha" class="nav-btn-primary">Daftar Gratis</a>
         </div>
 
         <!-- HAMBURGER MOBILE -->
         <button class="nav-hamburger" @click="open = !open" aria-label="Menu">
-            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
-                <path :class="{'hidden': open}" d="M4 6h16M4 12h16M4 18h16" />
-                <path :class="{'hidden': !open}" d="M6 18L18 6M6 6l12 12" />
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                <path :class="{ 'hidden': open }" d="M4 6h16M4 12h16M4 18h16" />
+                <path :class="{ 'hidden': !open }" d="M6 18L18 6M6 6l12 12" />
             </svg>
         </button>
 
@@ -272,12 +269,9 @@
 
     <!-- MOBILE MENU -->
     <div :class="{ 'open': open }" class="nav-mobile">
-        <a href="{{ route('welcome') }}"
-            class="nav-mobile-link {{ request()->is('/') ? 'active' : '' }}">Home</a>
-        <a href="/fitur"
-            class="nav-mobile-link {{ request()->is('fitur') ? 'active' : '' }}">Fitur</a>
-        <a href="/about"
-            class="nav-mobile-link {{ request()->is('about') ? 'active' : '' }}">Tentang</a>
+        <a href="{{ route('welcome') }}" class="nav-mobile-link {{ request()->is('/') ? 'active' : '' }}">Home</a>
+        <a href="/fitur" class="nav-mobile-link {{ request()->is('fitur') ? 'active' : '' }}">Fitur</a>
+        <a href="/about" class="nav-mobile-link {{ request()->is('about') ? 'active' : '' }}">Tentang</a>
 
 
         <div class="nav-mobile-divider"></div>

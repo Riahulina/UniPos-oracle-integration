@@ -13,7 +13,9 @@ class Usaha extends Model
         'nama_usaha',
         'alamat',
         'telp',
-        'logo'
+        'logo',
+        'status',
+        'approved_at',
     ];
 
     public function users()

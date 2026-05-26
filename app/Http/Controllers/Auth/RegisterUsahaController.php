@@ -35,7 +35,7 @@ class RegisterUsahaController extends Controller
 
             $file = $request->file('logo');
 
-            $logoName = time().'_'.$file->getClientOriginalName();
+            $logoName = time() . '_' . $file->getClientOriginalName();
 
             $file->storeAs('logo_usaha', $logoName, 'public');
         }
