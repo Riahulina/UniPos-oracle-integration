@@ -277,7 +277,7 @@
         <div class="nav-mobile-divider"></div>
 
         <div class="nav-mobile-actions">
-            <a href="/login" class="nav-mobile-btn ghost">Masuk</a>
+
             <a href="/register-usaha" class="nav-mobile-btn primary">Daftar Gratis</a>
         </div>
     </div>
